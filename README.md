@@ -11,8 +11,8 @@ O trabalho também incorpora um estudo de caso real, conectando teoria e prátic
 ## 🧱 Ambiente Utilizado
 
 * Kali Linux (máquina atacante)
-* DVWA (Damn Vulnerable Web Application) rodando em ambiente local (Laragon)
-* VirtualBox 
+* DVWA (Damn Vulnerable Web Application) rodando em VM
+* VirtualBox
 * Ferramentas:
 
   * Medusa
@@ -22,14 +22,14 @@ O trabalho também incorpora um estudo de caso real, conectando teoria e prátic
 
 ## 🌐 Arquitetura do Ambiente
 
-```text
-[Kali Linux VM]  --->  [Windows 10 VM - DVWA]
+```
+[Kali Linux VM]  --->  [Windows10 VM - DVWA]
         |                       |
      (Ataque)              (Alvo vulnerável)
 ```
 
-* Kali: `123.456.78.910`
-* DVWA: `123.132.12.1`
+* Kali: `192.16x.xx.xxx`
+* DVWA: `192.16x.xx.xxx`
 
 ---
 
@@ -38,13 +38,13 @@ O trabalho também incorpora um estudo de caso real, conectando teoria e prátic
 Validação de conectividade:
 
 ```bash
-ping 123.132.12.1
+ping 192.16x.xx.xxx
 ```
 
 Acesso à aplicação:
 
 ```
-http://123.132.12.1/DVWA
+http://192.16x.xx.xxx/DVWA
 ```
 
 ---
@@ -68,11 +68,11 @@ test
 ## 🧪 Teste com Medusa
 
 ```bash
-medusa -h 123.132.12.1 \
+medusa -h 192.16x.xx.xxx \
 -u admin \
 -P wordlist.txt \
 -M http \
--m FORM:"/DVWA/login.php:username=^USER^&password=^PASS^&Login=Login:Login failed"
+-m FORM:"/projetos-pessoais/DVWA/login.php:username=^USER^&password=^PASS^&Login=Login:Login failed"
 ```
 
 ### ⚠️ Observação
@@ -84,15 +84,30 @@ O Medusa apresentou limitações ao lidar com formulários HTTP baseados em sess
 ## 🧪 Teste com Hydra
 
 ```bash
-hydra -l admin -P wordlist.txt 123.132.12.1 http-post-form \
+hydra -l admin -P wordlist.txt 192.16x.xx.xxx http-post-form \
 "/projetos-pessoais/DVWA/login.php:username=^USER^&password=^PASS^&Login=Login:F=Login failed"
 ```
 
-### ⚠️ Desafios encontrados
+---
 
-* Falsos positivos devido à validação incorreta da resposta HTTP
-* Dificuldade em diferenciar sucesso e falha em aplicações com sessão
-* Sensibilidade da ferramenta à sintaxe e parâmetros
+## ⚠️ Limitações das Ferramentas
+
+Durante os testes, foram observadas limitações importantes nas ferramentas utilizadas:
+
+* O Medusa não possui suporte completo para formulários HTTP com autenticação baseada em sessão
+* O Hydra exige configuração precisa da validação de resposta, podendo gerar falsos positivos
+* A detecção de sucesso/falha em aplicações web depende da análise correta de redirecionamentos e conteúdo HTML
+
+Esses desafios refletem cenários reais de testes de segurança, onde ajustes manuais e validação humana são essenciais.
+
+---
+
+## 🧪 Boas Práticas Aplicadas
+
+* Execução apenas em ambiente controlado
+* Não realização de ataques em sistemas reais sem autorização
+* Sanitização de dados sensíveis (IPs e caminhos)
+* Validação manual dos resultados obtidos
 
 ---
 
@@ -115,6 +130,7 @@ Durante o projeto, foram identificados pontos importantes:
 * Aplicações web modernas exigem controle de sessão
 * Falsos positivos são comuns em testes automatizados
 * Validação manual é essencial em segurança ofensiva
+* A configuração incorreta de parâmetros pode comprometer os resultados
 
 ---
 
@@ -137,6 +153,7 @@ Este laboratório foi utilizado para simular, em ambiente controlado, o impacto 
 * Utilizar autenticação multifator (MFA)
 * Monitorar logs de acesso
 * Utilizar HTTPS
+* Evitar mensagens detalhadas de erro em autenticação
 
 ---
 
@@ -151,7 +168,7 @@ Nenhum sistema real foi atacado ou explorado sem autorização.
 ## 📂 Estrutura do Repositório
 
 ```
-kali-medusa-lab/
+lab-sec-Kali-Linux-Medusa/
 │
 ├── README.md
 ├── wordlist.txt
@@ -161,14 +178,14 @@ kali-medusa-lab/
 
 ---
 
-## 📸 Evidências (Opcional)
+## 📸 Evidências
 
-Adicione prints de:
+Sugestões de capturas de tela:
 
-* DVWA acessível pelo Kali
-* execução do Medusa
-* execução do Hydra
-* tentativa de login
+* DVWA acessível via Kali Linux
+* Execução dos comandos Medusa e Hydra
+* Tentativas de autenticação
+* Validação manual do login
 
 ---
 
@@ -176,6 +193,8 @@ Adicione prints de:
 
 Este projeto demonstra na prática como ataques de força bruta funcionam, suas limitações e a importância de validação correta dos resultados.
 
-Além disso, evidencia a necessidade de boas práticas de segurança em sistemas web.
+Além disso, evidencia a necessidade de boas práticas de segurança em sistemas web e o papel crítico da análise manual em testes de segurança.
 
 ---
+
+> 🔒 Os endereços IP e caminhos foram parcialmente mascarados para preservar boas práticas de segurança e privacidade.
